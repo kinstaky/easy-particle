@@ -1,0 +1,21 @@
+set(EASY_PARTICLE_TEST_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data")
+
+add_executable(test_energy_loss energy_loss.cpp)
+target_link_libraries(test_energy_loss PRIVATE particle)
+add_test(NAME energy_loss_test COMMAND test_energy_loss)
+
+add_executable(test_scatter scatter.cpp)
+target_link_libraries(test_scatter PRIVATE particle)
+target_compile_definitions(test_scatter PRIVATE TEST_DATA_DIR="${EASY_PARTICLE_TEST_DATA_DIR}")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	target_link_libraries(test_scatter PRIVATE ROOT::RIO ROOT::Graf)
+endif()
+add_test(NAME scatter_test COMMAND test_scatter)
+
+add_executable(test_breakup breakup.cpp)
+target_link_libraries(test_breakup PRIVATE particle)
+target_compile_definitions(test_breakup PRIVATE TEST_DATA_DIR="${EASY_PARTICLE_TEST_DATA_DIR}")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+	target_link_libraries(test_breakup PRIVATE ROOT::RIO ROOT::Graf)
+endif()
+add_test(NAME breakup_test COMMAND test_breakup)
